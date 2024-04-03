@@ -1,3 +1,7 @@
+v0.3.0
+* Add support for SegWit v1 (BIP350)
+* Add fixes to conversion, checksum validation
+
 v0.2.2
 * Update the convert package to ^3.1.1.
 
