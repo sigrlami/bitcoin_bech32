@@ -1,9 +1,8 @@
 import 'dart:convert';
-
 import 'exceptions.dart';
 
 /// An instance of the default implementation of the Bech32Codec.
-const Bech32mCodec bech32 = Bech32mCodec();
+const Bech32mCodec bech32m = Bech32mCodec();
 
 class Bech32mCodec extends Codec<Bech32m, String> {
   const Bech32mCodec();
@@ -35,7 +34,7 @@ class Bech32mEncoder extends Converter<Bech32m, String>
 
     if (hrp.length +
         data.length +
-        separator.length +
+        _separator.length +
         Bech32mValidations.checksumLength >
         maxLength) {
       throw TooLong(
@@ -63,7 +62,7 @@ class Bech32mEncoder extends Converter<Bech32m, String>
       throw OutOfBoundChars('<unknown>');
     }
 
-    return hrp + separator + checksummed.map((i) => charset[i]).join();
+    return hrp + _separator + checksummed.map((i) => _charset[i]).join();
   }
 }
 
@@ -82,10 +81,10 @@ class Bech32mDecoder extends Converter<String, Bech32m>
     }
 
     if (hasInvalidSeparator(input)) {
-      throw InvalidSeparator(input.lastIndexOf(separator));
+      throw InvalidSeparator(input.lastIndexOf(_separator));
     }
 
-    var separatorPosition = input.lastIndexOf(separator);
+    var separatorPosition = input.lastIndexOf(_separator);
 
     if (isChecksumTooShort(separatorPosition, input)) {
       throw TooShortChecksum();
@@ -108,7 +107,7 @@ class Bech32mDecoder extends Converter<String, Bech32m>
     }
 
     var dataBytes = data.split('').map((c) {
-      return charset.indexOf(c);
+      return _charset.indexOf(c);
     }).toList();
 
     if (hasOutOfBoundsChars(dataBytes)) {
@@ -116,7 +115,7 @@ class Bech32mDecoder extends Converter<String, Bech32m>
     }
 
     var checksumBytes = checksum.split('').map((c) {
-      return charset.indexOf(c);
+      return _charset.indexOf(c);
     }).toList();
 
     if (hasOutOfBoundsChars(checksumBytes)) {
@@ -136,7 +135,7 @@ class Bech32mValidations {
   static const int maxInputLength = 90;
   static const checksumLength = 6;
 
-  // From the entire input subtract the hrp length, the separator and the required checksum length
+  // From the entire input subtract the hrp length, the _separator and the required checksum length
   bool isChecksumTooShort(int separatorPosition, String input) {
     return (input.length - separatorPosition - 1 - checksumLength) < 0;
   }
@@ -158,7 +157,7 @@ class Bech32mValidations {
   }
 
   bool hasInvalidSeparator(String bech32) {
-    return bech32.lastIndexOf(separator) == -1;
+    return bech32.lastIndexOf(_separator) == -1;
   }
 
   bool hasOutOfRangeHrpCharacters(String hrp) {
@@ -175,9 +174,9 @@ class Bech32m {
   final List<int> data;
 }
 
-const String separator = '1';
+const String _separator = '1';
 
-const List<String> charset = [
+const List<String> _charset = [
   'q',
   'p',
   'z',
@@ -212,7 +211,7 @@ const List<String> charset = [
   'l',
 ];
 
-const List<int> generator = [
+const List<int> _generator = [
   0x3b6a57b2,
   0x26508e6d,
   0x1ea119fa,
@@ -227,9 +226,9 @@ int _polymod(List<int> values) {
   values.forEach((v) {
     var top = chk >> 25;
     chk = (chk & 0x1ffffff) << 5 ^ v;
-    for (var i = 0; i < generator.length; i++) {
+    for (var i = 0; i < _generator.length; i++) {
       if ((top >> i) & 1 == 1) {
-        chk ^= generator[i];
+        chk ^= _generator[i];
       }
     }
   });
