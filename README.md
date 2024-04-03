@@ -1,9 +1,18 @@
-# Bech32
+# Bech32 
 
-[![pub package](https://img.shields.io/pub/v/bech32.svg)](https://pub.dartlang.org/packages/bech32)
-[![CircleCI](https://circleci.com/gh/inapay/bech32.svg?style=svg)](https://circleci.com/gh/inapay/bech32)
+[![pub package](https://img.shields.io/pub/v/bech32.svg)](https://pub.dartlang.org/packages/bitcoin_bech32_ng)
 
-An implementation of the [BIP173 spec] for Segwit Bech32 address format.
+An implementation of the [BIP173]() and [BIP350]() specs for Segwit Bech32 address format. This is 
+a for of original []() that inroduces BIP350, conversion fixes and cleaner interface.
+
+## Installing
+
+Add it to your `pubspec.yaml`:
+
+```
+dependencies:
+  bitcoin_bech32_ng: any
+```
 
 ## Examples
 
@@ -33,14 +42,7 @@ The specification defines a myriad of cases in which decoding and encoding
 should fail. Please make sure your code catches all the relevant exception 
 defined in `lib/exceptions.dart`.
 
-## Installing
 
-Add it to your `pubspec.yaml`:
-
-```
-dependencies:
-  bech32: any
-```
 
 ## Licence overview
 
