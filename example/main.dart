@@ -1,4 +1,4 @@
-import 'package:bitcoin_bech32_ng/bech32.dart';
+import 'package:bitcoin_bech32_ng/bitcoin_bech32_ng.dart';
 
 //ignore_for_file: avoid_print
 void main() {
